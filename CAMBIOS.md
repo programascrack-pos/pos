@@ -1,3 +1,12 @@
+# VAO POS — v012 (sin cambio de versión funcional) — implementación de Apps Script nueva
+
+## Migración — segunda actualización de API_URL (pos.html v10→11, admin.html v6→7, reportes.html v6→7) — 21/09/2026
+La primera implementación nueva daba error de CORS (faltaba poner "Quién tiene acceso: Cualquier usuario") y después un error transitorio de Drive al abrir el archivo. Se creó una **implementación completamente nueva** (Versión 4, confirmada con "Cualquier usuario" desde el inicio), con URL propia: `...AKfycbyST8B1UPnZBLQdr8xiOTbgjcrHZGntdeDxt4__oq6KjpbCH-Z2qCV571MCetNvSRLY/exec`. Se actualizó en los 3 HTML. El registro de ejecuciones del proyecto (`doGet`, Versión 4) muestra respuestas completadas en menos de 1.3s, sin errores — el backend está sano, atado a la planilla correcta (`1lrXMejcgup2sF9_ASsqahbpVX2gIM1QXPrhAJOx9vsU`, confirmado antes con `getActiveSpreadsheet().getId()`).
+
+**No se tocó:** `Code.gs`, PIN, `ADMIN_CLAVE_HASH`, ninguna Script Property, ninguna lógica funcional. Solo la constante `API_URL` en los 3 HTML.
+
+---
+
 # VAO POS — v012 (sin cambio de versión funcional — la lógica de Code.gs sigue intacta)
 
 ## Migración — corrección del API_URL (pos.html v9→10, admin.html v5→6, reportes.html v5→6) — 20/09/2026
