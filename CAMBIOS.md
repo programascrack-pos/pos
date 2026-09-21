@@ -1,3 +1,14 @@
+# VAO POS — v012 (sin cambio de versión funcional — la lógica de Code.gs sigue intacta)
+
+## Migración — corrección del API_URL (pos.html v9→10, admin.html v5→6, reportes.html v5→6) — 20/09/2026
+**Causa confirmada de la falla de migración:** los 3 HTML seguían con el `API_URL` viejo (`...UWDiyQUH91OpCx4rWmsv-G4/exec`) — por eso toda venta, sin importar qué Apps Script/planilla nuevos se hayan creado, seguía cayendo en la planilla de la cuenta anterior. Se actualizó en los 3 archivos a la URL nueva confirmada (`...H93_zTaYaWdMxv-ADKleXLSbH0p3gOmGNEPlAILW/exec`).
+
+**Esto NO descarta por sí solo** que además haya un problema de vinculación en el proyecto de Apps Script (que el proyecto detrás de esa URL nueva no esté realmente atado a la planilla `1lrXMejcgup2sF9_ASsqahbpVX2gIM1QXPrhAJOx9vsU`) — esa parte sigue sin poder verificarse desde acá, no hay acceso a ninguna de las dos cuentas de Google. Si después de este cambio la venta de prueba sigue cayendo en la planilla vieja, el problema está confirmado del lado del proyecto de Apps Script (hay que crearlo de cero desde `Extensiones → Apps Script` parado en la planilla nueva, no reusar el proyecto existente).
+
+**No se tocó:** `Code.gs`, PIN, `ADMIN_CLAVE_HASH`, ninguna Script Property, ninguna lógica funcional. Solo la constante `API_URL` en los 3 HTML.
+
+---
+
 # VAO POS — v012 (sin cambio de versión — esto es una MIGRACIÓN, no una nueva versión)
 
 ## Migración de cuenta — 20/09/2026
