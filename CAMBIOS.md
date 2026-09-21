@@ -1,10 +1,18 @@
+# VAO POS — v012 (sin cambio de versión — esto es una MIGRACIÓN, no una nueva versión)
+
+## Migración de cuenta — 20/09/2026
+Se actualizó únicamente la metadata de identificación en `SISTEMA` (Code.gs) para reflejar la cuenta nueva `programascrack@gmail.com`, la URL de Vercel (`pos-dun-five.vercel.app`), el repo (`programascrack-pos/pos`) y el nombre de planilla (`SmartPOS_VAO_Sistemas_Planilla_Staging_FINAL`). Se eliminó el bloque `produccion` que apuntaba a URLs/repo de una instancia de producción anterior no relacionada con esta cuenta — no se usaba en ningún lado del código, así que no tiene impacto funcional.
+**Cero cambios de lógica.** Ver `MIGRACION.md` para la guía completa de los pasos manuales (creación de planilla/Apps Script en la cuenta nueva, Script Properties, actualización de `API_URL` en los 3 HTML, GitHub, Vercel) — son pasos que requieren acceso a Google/GitHub/Vercel que no están disponibles desde acá.
+
+---
+
 # VAO POS — VERSIÓN FINAL v012 — generado 20/09/2026
 
 ## VERIFICACIÓN ADICIONAL — de dónde salen las credenciales que siguen funcionando (sin cambios de código)
-Se confirmó con una prueba real en el staging: el PIN `123456` de XX y la clave de admin `ventilador220` siguen funcionando después de instalar v012. Esto es correcto y esperado, no un problema:
-- **PIN de XX**: vive en Script Properties (`PIN_XX`), como `hashSimple('123456')`. Se guardó con `setPIN('XX','123456')` en algún momento anterior a esta auditoría. No se tocó.
-- **Clave de admin**: vive en Script Properties (`ADMIN_CLAVE_HASH`), como `hashSimple('ventilador220')`. Se guardó cuando se corrió, en algún momento anterior, la función que en ese momento tenía esa clave escrita en el código (`generarClaveAdmin()`, ahora `setAdminClave()`). Reemplazar el contenido de `Code.gs` no borra Script Properties — son dos almacenamientos separados en Apps Script, y el hash guardado sigue siendo válido aunque el código que lo generó haya cambiado.
-- Búsqueda global repetida sobre los 4 archivos del zip: `123456` no aparece salvo como parte del alfabeto de caracteres del generador de tokens (`...0123456789`); `ventilador220` no aparece en ningún archivo ejecutable, solo como texto explicativo en este changelog.
+Se confirmó con una prueba real en el staging: el PIN de prueba de XX y la credencial administrativa anterior de ADMIN siguen funcionando después de instalar v012. Esto es correcto y esperado, no un problema:
+- **PIN de XX**: vive en Script Properties (`PIN_XX`), como el hash del PIN configurado. Se guardó con `setPIN('XX', ...)` en algún momento anterior a esta auditoría. No se tocó.
+- **Clave de admin**: vive en Script Properties (`ADMIN_CLAVE_HASH`), como el hash de la credencial administrativa anterior. Se guardó cuando se corrió, en algún momento anterior, la función que en ese momento tenía esa clave escrita en el código (`generarClaveAdmin()`, ahora `setAdminClave()`). Reemplazar el contenido de `Code.gs` no borra Script Properties — son dos almacenamientos separados en Apps Script, y el hash guardado sigue siendo válido aunque el código que lo generó haya cambiado.
+- Búsqueda global repetida sobre los 4 archivos del zip: ningún PIN real aparece salvo como parte del alfabeto de caracteres del generador de tokens (`...0123456789`); la credencial administrativa anterior no aparece en ningún archivo ejecutable, solo como referencia genérica en este changelog.
 - No se modificó ningún PIN ni la clave de admin. Las 6 baterías de prueba se re-ejecutaron contra el `Code.gs` final: 0 fallos.
 
 ---
@@ -15,7 +23,7 @@ Se confirmó con una prueba real en el staging: el PIN `123456` de XX y la clave
 
 | Archivo | Función | Problema | Corrección |
 |---|---|---|---|
-| Code.gs | `generarClaveAdmin()` | Contraseña de admin (`ventilador220`) escrita en texto plano en el código fuente. Además el nombre de la función no coincidía con lo que pedía el mensaje de error (`setAdminClave`) | Renombrada a `setAdminClave(claveNueva)` — **ya no existe ninguna contraseña dentro del código**. Se pasa como parámetro al ejecutarla a mano, una vez, desde el editor de Apps Script. Sigue sin estar ruteada en `doGet` — no se puede llamar por web bajo ningún nombre |
+| Code.gs | `generarClaveAdmin()` | Contraseña de admin (la credencial administrativa anterior) escrita en texto plano en el código fuente. Además el nombre de la función no coincidía con lo que pedía el mensaje de error (`setAdminClave`) | Renombrada a `setAdminClave(claveNueva)` — **ya no existe ninguna contraseña dentro del código**. Se pasa como parámetro al ejecutarla a mano, una vez, desde el editor de Apps Script. Sigue sin estar ruteada en `doGet` — no se puede llamar por web bajo ningún nombre |
 | Code.gs | `getTokenMP` | Devolvía el token real de MercadoPago al navegador (ya estaba gateado por sesión desde la ronda anterior, pero seguía viajando el valor real) | Ahora devuelve solo `{configurado: true/false}` — el valor del token nunca sale del servidor |
 | Code.gs | *(nueva)* `crearPreferenciaMP` | — | Genera la preferencia de pago llamando a la API de MercadoPago **del lado del servidor** (`UrlFetchApp`), y devuelve al navegador únicamente la URL de pago (`initPoint`) para armar el QR. Exige sesión válida del mismo cliente, igual que el resto |
 | pos.html | `generarQRMP()` | Llamaba directo a `api.mercadopago.com` desde el navegador con el token real en el header `Authorization: Bearer ...` — visible en las herramientas de desarrollador de quien esté usando el POS | Ahora llama a `crearPreferenciaMP` en el backend; el navegador nunca ve el token |
@@ -23,7 +31,7 @@ Se confirmó con una prueba real en el staging: el PIN `123456` de XX y la clave
 
 ## Búsqueda global de credenciales — qué se encontró
 Se buscó en `Code.gs` y en los 4 HTML cualquier cadena que pudiera ser contraseña, PIN, token, API key o secreto. Además se revisaron **todas las celdas de la planilla real** (XX y LP) buscando tokens guardados por error — no se encontró ninguno.
-- La única credencial real que quedaba en el código era `ventilador220` — corregida arriba.
+- La única credencial real que quedaba en el código era la credencial administrativa anterior — corregida arriba.
 - Las menciones a `APP_USR-...` en los comentarios de `setTokenMP` son ejemplos de formato, no tokens reales — se dejaron como están porque son solo documentación de cómo se ve un token de MP, no un secreto.
 - `admin.html` tiene un `<input type="password">` para que el admin escriba su clave al loguearse — es el campo del formulario, no una credencial guardada.
 
@@ -46,7 +54,7 @@ Después de la primera ronda, se pidió explícitamente revisar TODAS las funcio
 | Code.gs | `crearVendedor` | **Crítico** — dar de alta un cliente nuevo (con PIN generado y token de MercadoPago incluidos) no exigía sesión de admin. Cualquiera con la URL podía crear clientes | Ahora exige `validarSesionAdmin(data.token)` |
 | Code.gs | `cerrarSesionCliente` | Cualquiera podía forzar el cierre de sesión de **otro** cliente sin conocer su token, solo mandando su prefijo | Ahora exige que el token mandado empiece con `CLI_<prefijo>_` — no hace falta que esté vigente (el logout tiene que funcionar con token vencido), pero sí que sea del mismo cliente |
 | Code.gs | `getInfo` (pública a propósito, es un ping de diagnóstico) | Devolvía los correos personales del dueño del sistema y el nombre del repo de GitHub, sin ninguna autenticación | Se recortó para devolver solo proyecto/entorno/versión — nunca correos ni repo |
-| Code.gs | `generarClaveAdmin()` | Tiene una contraseña de admin **hardcodeada en texto plano** (`ventilador220`) en el código fuente. No es explotable por web porque la función no está ruteada en `doGet` — solo se puede ejecutar a mano desde el editor de Apps Script — pero sigue siendo una credencial expuesta en el código | **No se puede corregir desde acá** — es una función de configuración inicial pensada para que la edites vos, cambies la clave, y la corras una vez. **Acción tuya pendiente: cambiá esa clave antes de desplegar a producción**, y considerá borrar la clave en texto plano del archivo después de correrla una vez |
+| Code.gs | `generarClaveAdmin()` | Tiene una contraseña de admin **hardcodeada en texto plano** (la credencial administrativa anterior) en el código fuente. No es explotable por web porque la función no está ruteada en `doGet` — solo se puede ejecutar a mano desde el editor de Apps Script — pero sigue siendo una credencial expuesta en el código | **No se puede corregir desde acá** — es una función de configuración inicial pensada para que la edites vos, cambies la clave, y la corras una vez. **Acción tuya pendiente: cambiá esa clave antes de desplegar a producción**, y considerá borrar la clave en texto plano del archivo después de correrla una vez |
 | pos.html | `irAlInicio()` | Llamaba a `cerrarSesion` sin mandar token | Se agregó, capturando el token antes de borrarlo de localStorage |
 | admin.html | alta de cliente | No mandaba `token` al backend | Se agregó `token: tokenAdmin` al payload |
 

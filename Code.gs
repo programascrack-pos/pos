@@ -1,34 +1,28 @@
 // ===============================
 // 🟩 PROYECTO: VAO POS MULTIHOJA — STAGING
-// 📍 googlesheet: victoralvarezojeda@gmail.com
-// 📍 Claude: patagonia.salvaje.comidas@gmail.com
-// 📍 Deepseek: patagonia.salvaje.comidas@gmail.com
-// 🌐 URL: https://vao-pos-staging.vercel.app/
-// 📁 Repo: https://github.com/vitocoo/SmartPOS-VAO-Sistemas-STAGING
-// 📊 Planilla: Copia de SmartPOS_VAO_Sistemas_Planilla_Staging
+// 📍 googlesheet: programascrack@gmail.com
+// 📍 Claude: programascrack@gmail.com
+// 📍 Deepseek: programascrack@gmail.com
+// 🌐 URL: https://pos-dun-five.vercel.app/
+// 📁 Repo: https://github.com/programascrack-pos/pos
+// 📊 Planilla: SmartPOS_VAO_Sistemas_Planilla_Staging_FINAL
 // 🧩 Arquitectura: 1 planilla, multihojas por cliente
 // 🎯 Origen: POS Lupino + funciones maduras de Copihue
 // ⚠️ ESTE ES EL SISTEMA DE PRUEBAS — NO PRODUCCIÓN
-// ⚠️ Producción vive en: vaopos.vercel.app
-// 📅 Última edición: 15/09/2026
+// 📅 Última edición: 20/09/2026
 // ===============================
 
 const SISTEMA = {
-  proyecto:      'VAO POS MULTIHOJA STAGING',
+  proyecto:      'VAO POS MULTIHOJA — STAGING',
   entorno:       'staging',
-  googlesheet:   'victoralvarezojeda@gmail.com',
-  claude:        'patagonia.salvaje.comidas@gmail.com',
-  deepseek:      'patagonia.salvaje.comidas@gmail.com',
-  url:           'https://vao-pos-staging.vercel.app/',
-  repo:          'vitocoo/SmartPOS-VAO-Sistemas-STAGING',
-  planilla:      'Copia de SmartPOS_VAO_Sistemas_Planilla_Staging',
+  googlesheet:   'programascrack@gmail.com',
+  claude:        'programascrack@gmail.com',
+  deepseek:      'programascrack@gmail.com',
+  url:           'https://pos-dun-five.vercel.app/',
+  repo:          'https://github.com/programascrack-pos/pos',
+  planilla:      'SmartPOS_VAO_Sistemas_Planilla_Staging_FINAL',
   arquitectura:  '1 planilla, multihojas por cliente',
-  origen:        'POS Lupino + funciones de Copihue',
-  produccion:    {
-    url:      'https://vaopos.vercel.app/',
-    repo:     'vitocoo/SmartPOS-VAO-Sistemas',
-    planilla: 'SmartPOS_VAO_Sistemas_Planilla'
-  },
+  origen:        'POS Lupino + funciones maduras de Copihue',
   version:       'v012',
   ultimaEdicion: '20/09/2026'
 };
