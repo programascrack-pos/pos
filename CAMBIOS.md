@@ -1,5 +1,16 @@
 # VAO POS — VERSIÓN FINAL v012 — generado 20/09/2026
 
+## VERIFICACIÓN ADICIONAL — de dónde salen las credenciales que siguen funcionando (sin cambios de código)
+Se confirmó con una prueba real en el staging: el PIN `123456` de XX y la clave de admin `ventilador220` siguen funcionando después de instalar v012. Esto es correcto y esperado, no un problema:
+- **PIN de XX**: vive en Script Properties (`PIN_XX`), como `hashSimple('123456')`. Se guardó con `setPIN('XX','123456')` en algún momento anterior a esta auditoría. No se tocó.
+- **Clave de admin**: vive en Script Properties (`ADMIN_CLAVE_HASH`), como `hashSimple('ventilador220')`. Se guardó cuando se corrió, en algún momento anterior, la función que en ese momento tenía esa clave escrita en el código (`generarClaveAdmin()`, ahora `setAdminClave()`). Reemplazar el contenido de `Code.gs` no borra Script Properties — son dos almacenamientos separados en Apps Script, y el hash guardado sigue siendo válido aunque el código que lo generó haya cambiado.
+- Búsqueda global repetida sobre los 4 archivos del zip: `123456` no aparece salvo como parte del alfabeto de caracteres del generador de tokens (`...0123456789`); `ventilador220` no aparece en ningún archivo ejecutable, solo como texto explicativo en este changelog.
+- No se modificó ningún PIN ni la clave de admin. Las 6 baterías de prueba se re-ejecutaron contra el `Code.gs` final: 0 fallos.
+
+---
+
+
+
 ## TERCERA RONDA — eliminación de credenciales expuestas (Code.gs v011 a v012)
 
 | Archivo | Función | Problema | Corrección |
